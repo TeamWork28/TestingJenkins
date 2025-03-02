@@ -1,3 +1,5 @@
+import sys
+
 def add(x, y):
     return x + y
 
@@ -9,32 +11,35 @@ def multiply(x, y):
 
 def divide(x, y):
     if y == 0:
-        raise ValueError("Cannot divide by zero!")
+        return "Error: Division by zero"
     return x / y
 
-def calculator():
-    print("Select operation:")
-    print("1. Add")
-    print("2. Subtract")
-    print("3. Multiply")
-    print("4. Divide")
-
-    choice = input("Enter choice (1/2/3/4): ")
-
-    if choice in ['1', '2', '3', '4']:
-        num1 = float(input("Enter first number: "))
-        num2 = float(input("Enter second number: "))
-
-        if choice == '1':
-            print(f"{num1} + {num2} = {add(num1, num2)}")
-        elif choice == '2':
-            print(f"{num1} - {num2} = {subtract(num1, num2)}")
-        elif choice == '3':
-            print(f"{num1} * {num2} = {multiply(num1, num2)}")
-        elif choice == '4':
-            print(f"{num1} / {num2} = {divide(num1, num2)}")
+def calculator(operation, num1, num2):
+    if operation == "add":
+        return add(num1, num2)
+    elif operation == "subtract":
+        return subtract(num1, num2)
+    elif operation == "multiply":
+        return multiply(num1, num2)
+    elif operation == "divide":
+        return divide(num1, num2)
     else:
-        print("Invalid input")
+        return "Error: Invalid operation"
 
-if __name__ == "__main__":
-    calculator()
+# Ensure correct number of arguments
+if len(sys.argv) != 4:
+    print("Usage: python3 Calculator.py <operation> <num1> <num2>")
+    sys.exit(1)
+
+# Read command-line arguments
+operation = sys.argv[1].lower()
+try:
+    num1 = float(sys.argv[2])
+    num2 = float(sys.argv[3])
+except ValueError:
+    print("Error: Please provide valid numbers.")
+    sys.exit(1)
+
+# Perform calculation
+result = calculator(operation, num1, num2)
+print(f"Result: {result}")
